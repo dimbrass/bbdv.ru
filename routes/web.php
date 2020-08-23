@@ -16,3 +16,12 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('tz-tek', function () {
+    return view('tz_tek');
+});
+Route::post('tz-tek', 'TzController@count')->name('tz_tek');
