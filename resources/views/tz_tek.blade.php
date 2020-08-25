@@ -15,14 +15,13 @@
                 X=8, Y=2 – ответ 1,2   <br>
                 X=8, Y=3 – ответ 1,1   <br>
                 </div>
-
                 <div class="card-body">    
                     <form name="tek" action="{{ route('tz_tek') }}" target="_self" method="post">
                         @csrf
                         <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label for="stones">Камней (Х)</label>
-                                    <input name="stones" type="text" class="form-control @error('stones') is-invalid @enderror" id="stones" placeholder="" value="{{ old('stones') }}" required autofocus>
+                                    <input name="stones" type="text" class="form-control @error('stones') is-invalid @enderror" id="stones" placeholder="" value="" required autofocus>
                                     <div class="invalid-feedback">
                                     @error('stones')
                                         <strong>{{ $message }}</strong>
@@ -31,7 +30,7 @@
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label for="bugs">Жуков (Y)</label>
-                                    <input name="bugs" type="text" class="form-control @error('bugs') is-invalid @enderror" id="bugs" placeholder="" value="{{ old('bugs') }}" required>
+                                    <input name="bugs" type="text" class="form-control @error('bugs') is-invalid @enderror" id="bugs" placeholder="" value="" required>
                                     <div class="invalid-feedback">
                                     @error('bugs')
                                         <strong>{{ $message }}</strong>
@@ -42,24 +41,35 @@
                         <button class="btn btn-primary btn-lg btn-block" type="submit">Посчитать и нарисовать</button>
                     </form> 
 
-                    {{ old('stones') }} {{ old('bugs') }}
-
                     <br><br>
-                    @isset($bugs_stoun_numbers)                        
-                        @for ($i = 1; $i <= $stones['0']; $i++)
+
+                    @isset($all_bug_stone_ids)        
+
+                        @for ($i = 1; $i <= $all_stones_count['0']; $i++)
+
                             @php
-                                $color = 'dark';    // dd($bugs_stoun_numbers);                   
-                            @endphp
+                                $current_bug_stone_number = current($all_bug_stone_ids) - 1;
                             
-                            @if ($i == current($bugs_stoun_numbers))
-                                @php
-                                    $color = 'success'; 
-                                    next($bugs_stoun_numbers);
-                                @endphp
-                            @endif
-                            <button type="button" class="btn btn-{{ $color }}">{{ $i }}</button><br>
+                                $color = 'dark'; 
+                                if ($i == $current_bug_stone_number)
+                                {
+                                    $color = 'success';      
+                                    next($all_bug_stone_ids);                                          
+                                }
+                            @endphp
+
+                            <button type="button" class="btn btn-{{ $color }}">{{ $i }}</button>    
+
                         @endfor
+                        <br>
+                        <br>
+                        Последний жук залез под камень № {{ $last_bug_stone_properties['last_bug_stone_number'] }}.  <br>
+                        Слева камней: {{ $last_bug_stone_properties['last_bug_stone_backward'] }}  <br>
+                        Справа камней: {{ $last_bug_stone_properties['last_bug_stone_forward'] }}  <br>
+                        
+
                     @endisset
+
                 </div>
             </div>
         </div>
